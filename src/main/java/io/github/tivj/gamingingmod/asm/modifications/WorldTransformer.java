@@ -33,7 +33,8 @@ public class WorldTransformer implements ITransformer {
         InsnList list = new InsnList();
         LabelNode label = new LabelNode();
         list.add(new FieldInsnNode(Opcodes.GETSTATIC, "io/github/tivj/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "io/github/tivj/gamingingmod/GamingingMod", "isEnabled", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "io/github/tivj/gamingingmod/GamingingMod", "config", "Lio/github/tivj/gamingingmod/config/GamingingConfig;"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "io/github/tivj/gamingingmod/config/GamingingConfig", "isEnabled", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
         list.add(new FieldInsnNode(Opcodes.GETSTATIC, "io/github/tivj/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
         list.add(new VarInsnNode(Opcodes.FLOAD, 2));
