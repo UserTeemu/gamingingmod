@@ -32,14 +32,14 @@ public class ClassTransformer implements IClassTransformer {
         Collection<ITransformer> transformers = transformerMap.get(transformedName);
         if (transformers.isEmpty()) return bytes;
 
-        GamingingMod.LOGGER.info("Found {} transformers for {}", transformers.size(), transformedName);
+        System.out.println("Found " + transformers.size() + " transformers for {}" + transformedName);
 
         ClassReader reader = new ClassReader(bytes);
         ClassNode node = new ClassNode();
         reader.accept(node, ClassReader.EXPAND_FRAMES);
 
         transformers.forEach(transformer -> {
-            GamingingMod.LOGGER.info("Applying transformer {} on {}...", transformer.getClass().getName(), transformedName);
+            System.out.println("Applying transformer " + transformer.getClass().getName() + " on {}..." + transformedName);
             transformer.transform(node, transformedName);
         });
 
@@ -48,7 +48,7 @@ public class ClassTransformer implements IClassTransformer {
         try {
             node.accept(writer);
         } catch (Throwable t) {
-            GamingingMod.LOGGER.error("Exception when transforming " + transformedName + ": " + t.getClass().getSimpleName());
+            System.out.println("Exception when transforming " + transformedName + ": " + t.getClass().getSimpleName());
             t.printStackTrace();
         }
 

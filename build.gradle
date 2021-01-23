@@ -8,10 +8,12 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 version = "1.0.0"
 group = "io.github.tivj.gamingingmod"
@@ -24,13 +26,35 @@ minecraft {
     runDir = "run"
     mappings = "stable_22"
     makeObfSourceJar = false
+    clientRunArgs += " --tweakClass io.github.tivj.gamingingmod.asm.tweaker.GamingingTweaker"
 
     replaceIn "GamingingMod.java"
     replace "@MOD_VERSION@", project.version
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url "https://repo.sk1er.club/repository/maven-public" }
+}
+
 dependencies {
-    provided files("libs/modcore.jar")
+    compile "net.modcore:Loader:2.0.0"
+    provided("net.modcore:ModCore:714-10809-SNAPSHOT") {
+        exclude module: 'asm-commons'
+        exclude module: 'asm-tree'
+        exclude module: 'asm'
+    }
+}
+
+shadowJar {
+    baseName = jar.baseName
+    classifier = jar.classifier
+}
+
+reobf {
+    shadowJar {} // Reobfuscate the shadowed JAR
 }
 
 task moveResources {
@@ -65,10 +89,9 @@ processResources {
 jar {
     manifest {
         attributes(
-                "FMLCorePlugin": "io.github.tivj.gamingingmod.asm.tweaker.Tweaker",
-                "ForceLoadAsMod": true,
-                "FMLCorePluginContainsFMLMod": true,
-                "ModSide": "CLIENT"
+                "TweakClass": "io.github.tivj.gamingingmod.asm.tweaker.GamingingTweaker",
+                "TweakOrder": "0",
+                "ModSide": "CLIENT",
         )
     }
 }

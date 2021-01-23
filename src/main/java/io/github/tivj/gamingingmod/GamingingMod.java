@@ -1,8 +1,6 @@
 package io.github.tivj.gamingingmod;
 
-import club.sk1er.mods.modcore.ModCoreInstaller;
 import io.github.tivj.gamingingmod.config.GamingingConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,7 +31,6 @@ public class GamingingMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        ModCoreInstaller.initializeModCore(Minecraft.getMinecraft().mcDataDir);
         this.config.preload();
         ClientCommandHandler.instance.registerCommand(new GamingingCommand());
     }

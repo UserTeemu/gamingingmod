@@ -1,8 +1,8 @@
 package io.github.tivj.gamingingmod;
 
-import club.sk1er.mods.core.ModCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.modcore.api.ModCoreAPI;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,7 @@ public class GamingingCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        ModCore.getInstance().getGuiHandler().open(GamingingMod.INSTANCE.config.gui());
+        ModCoreAPI.getGuiUtil().openScreen(GamingingMod.INSTANCE.config.gui());
     }
 
     @Override
