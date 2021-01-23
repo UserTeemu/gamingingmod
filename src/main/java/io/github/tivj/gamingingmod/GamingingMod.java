@@ -40,8 +40,12 @@ public class GamingingMod {
         this.timer++;
     }
 
-    public Vec3 getColor(float partialTicks) {
-        Color color = Color.getHSBColor((this.timer + partialTicks) / this.config.getSpeedDivider() % 1F, 1F, 1F);
+    public Color getColor(float partialTicks) {
+        return Color.getHSBColor((this.timer + partialTicks) / this.config.getSpeedDivider() % 1F, 1F, 1F);
+    }
+
+    public Vec3 getColorInVec3(float partialTicks) {
+        Color color = getColor(partialTicks);
         return new Vec3(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
     }
 }

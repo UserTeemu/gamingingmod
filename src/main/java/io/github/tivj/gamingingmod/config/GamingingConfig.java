@@ -14,10 +14,17 @@ public class GamingingConfig extends Vigilant {
 
     @Property(
         type = PropertyType.SWITCH,
-        name = "Enabled",
+        name = "Enable sky coloring",
         category = "Gaminging", subcategory = "Gaminging"
     )
-    public boolean isEnabled = true;
+    public boolean isSkyEnabled = true;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Enable world border coloring",
+            category = "Gaminging", subcategory = "Gaminging"
+    )
+    public boolean isWorldBorderEnabled = true;
 
     @Property(
         type = PropertyType.SLIDER,

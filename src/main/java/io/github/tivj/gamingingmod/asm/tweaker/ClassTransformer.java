@@ -2,8 +2,8 @@ package io.github.tivj.gamingingmod.asm.tweaker;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import io.github.tivj.gamingingmod.GamingingMod;
-import io.github.tivj.gamingingmod.asm.modifications.*;
+import io.github.tivj.gamingingmod.asm.modifications.RenderGlobalTransformer;
+import io.github.tivj.gamingingmod.asm.modifications.WorldTransformer;
 import io.github.tivj.gamingingmod.asm.tweaker.transformer.ITransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
@@ -17,6 +17,7 @@ public class ClassTransformer implements IClassTransformer {
 
     public ClassTransformer() {
         registerTransformer(new WorldTransformer());
+        registerTransformer(new RenderGlobalTransformer());
     }
 
     private void registerTransformer(ITransformer transformer) {
