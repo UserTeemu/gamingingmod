@@ -1,4 +1,4 @@
-package io.github.tivj.gamingingmod;
+package dev.userteemu.gamingingmod;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

@@ -1,10 +1,10 @@
-package io.github.tivj.gamingingmod.asm.tweaker;
+package dev.userteemu.gamingingmod.asm.tweaker;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import io.github.tivj.gamingingmod.asm.modifications.RenderGlobalTransformer;
-import io.github.tivj.gamingingmod.asm.modifications.WorldTransformer;
-import io.github.tivj.gamingingmod.asm.tweaker.transformer.ITransformer;
+import dev.userteemu.gamingingmod.asm.modifications.RenderGlobalTransformer;
+import dev.userteemu.gamingingmod.asm.modifications.WorldTransformer;
+import dev.userteemu.gamingingmod.asm.tweaker.transformer.ITransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

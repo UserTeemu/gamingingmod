@@ -1,10 +1,8 @@
-package io.github.tivj.gamingingmod.asm.modifications;
+package dev.userteemu.gamingingmod.asm.modifications;
 
-import io.github.tivj.gamingingmod.asm.tweaker.transformer.ITransformer;
+import dev.userteemu.gamingingmod.asm.tweaker.transformer.ITransformer;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
-
-import java.util.ListIterator;
 
 public class WorldTransformer implements ITransformer {
     @Override
@@ -26,13 +24,13 @@ public class WorldTransformer implements ITransformer {
     public InsnList getColor() {
         InsnList list = new InsnList();
         LabelNode label = new LabelNode();
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "io/github/tivj/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "io/github/tivj/gamingingmod/GamingingMod", "config", "Lio/github/tivj/gamingingmod/config/GamingingConfig;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "io/github/tivj/gamingingmod/config/GamingingConfig", "isSkyEnabled", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/GamingingMod", "config", "Lio/github/tivj/gamingingmod/config/GamingingConfig;"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/config/GamingingConfig", "isSkyEnabled", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "io/github/tivj/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Lio/github/tivj/gamingingmod/GamingingMod;"));
         list.add(new VarInsnNode(Opcodes.FLOAD, 2));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "io/github/tivj/gamingingmod/GamingingMod", "getColorInVec3", "(F)Lnet/minecraft/util/Vec3;", false));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "dev/userteemu/gamingingmod/GamingingMod", "getColorInVec3", "(F)Lnet/minecraft/util/Vec3;", false));
         list.add(new InsnNode(Opcodes.ARETURN));
         list.add(label);
         return list;

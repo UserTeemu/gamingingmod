@@ -16,7 +16,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 version = "1.0.0"
-group = "io.github.tivj.gamingingmod"
+group = "dev.userteemu.gamingingmod"
 archivesBaseName = "Gamingingmod"
 
 sourceCompatibility = targetCompatibility = 1.8
@@ -26,7 +26,7 @@ minecraft {
     runDir = "run"
     mappings = "stable_22"
     makeObfSourceJar = false
-    clientRunArgs += " --tweakClass io.github.tivj.gamingingmod.asm.tweaker.GamingingTweaker"
+    clientRunArgs += " --tweakClass dev.userteemu.gamingingmod.asm.tweaker.GamingingTweaker"
 
     replaceIn "GamingingMod.java"
     replace "@MOD_VERSION@", project.version
@@ -89,7 +89,7 @@ processResources {
 jar {
     manifest {
         attributes(
-                "TweakClass": "io.github.tivj.gamingingmod.asm.tweaker.GamingingTweaker",
+                "TweakClass": "dev.userteemu.gamingingmod.asm.tweaker.GamingingTweaker",
                 "TweakOrder": "0",
                 "ModSide": "CLIENT",
         )

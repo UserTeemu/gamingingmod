@@ -1,4 +1,4 @@
-package io.github.tivj.gamingingmod.config;
+package dev.userteemu.gamingingmod.config;
 
 import club.sk1er.vigilance.Vigilant;
 import club.sk1er.vigilance.data.Property;

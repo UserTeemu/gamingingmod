@@ -1,6 +1,6 @@
-package io.github.tivj.gamingingmod;
+package dev.userteemu.gamingingmod;
 
-import io.github.tivj.gamingingmod.config.GamingingConfig;
+import dev.userteemu.gamingingmod.config.GamingingConfig;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
