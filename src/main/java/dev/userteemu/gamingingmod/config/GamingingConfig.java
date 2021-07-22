@@ -37,9 +37,9 @@ public class GamingingConfig extends Vigilant {
 
     /**
      * @return Inverted version of speed.
-     * Reson for inverting: It's easier to think that larger speed means faster, and not the other way around.
+     * Reason for inverting: It's easier to think that larger speed means faster, and not the other way around.
      */
     public float getSpeedDivider() {
-        return 5000F - speed;
+        return Math.min(5010F - speed, 5000F);
     }
 }
