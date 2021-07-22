@@ -16,7 +16,7 @@ public class RenderGlobalTransformer implements ITransformer {
     public void transform(ClassNode classNode, String name) {
         for (MethodNode methodNode : classNode.methods) {
             String methodName = mapMethodName(classNode, methodNode);
-            if (methodName.equals("renderWorldBorder") || methodName.equals("todo")) {
+            if (methodName.equals("renderWorldBorder") || methodName.equals("func_180449_a")) {
                 ListIterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
                 LabelNode afterColorObtained = new LabelNode();
 
@@ -24,9 +24,9 @@ public class RenderGlobalTransformer implements ITransformer {
                     AbstractInsnNode node = iterator.next();
                     if (node.getOpcode() == Opcodes.INVOKESTATIC && node.getNext().getNext().getNext().getNext().getNext().getOpcode() == Opcodes.INVOKEVIRTUAL) {
                         String methodInvokeName = mapMethodNameFromNode(node);
-                        if (methodInvokeName.equals("pushMatrix") || methodInvokeName.equals("todo")) {
+                        if (methodInvokeName.equals("pushMatrix") || methodInvokeName.equals("func_179094_E")) {
                             String laterMethodInvokeName = mapMethodNameFromNode(node.getNext().getNext().getNext().getNext().getNext());
-                            if (laterMethodInvokeName.equals("getID") || laterMethodInvokeName.equals("todo")) {
+                            if (laterMethodInvokeName.equals("getID") || laterMethodInvokeName.equals("func_177766_a")) {
                                 methodNode.instructions.insert(node.getNext().getNext().getNext().getNext().getNext(), afterColorObtained);
                                 methodNode.instructions.insert(node, storeGamingingColorsForWorldBorder(afterColorObtained));
                             }
