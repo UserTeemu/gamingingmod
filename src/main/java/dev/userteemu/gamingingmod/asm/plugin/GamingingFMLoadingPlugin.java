@@ -1,5 +1,6 @@
-package dev.userteemu.gamingingmod.asm.tweaker;
+package dev.userteemu.gamingingmod.asm.plugin;
 
+import dev.userteemu.gamingingmod.asm.ClassTransformer;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 

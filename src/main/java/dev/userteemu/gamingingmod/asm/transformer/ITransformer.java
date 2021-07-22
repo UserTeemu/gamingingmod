@@ -1,4 +1,4 @@
-package dev.userteemu.gamingingmod.asm.tweaker.transformer;
+package dev.userteemu.gamingingmod.asm.transformer;
 
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import org.objectweb.asm.tree.*;

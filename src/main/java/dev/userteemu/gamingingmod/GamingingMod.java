@@ -1,8 +1,8 @@
 package dev.userteemu.gamingingmod;
 
 import dev.userteemu.gamingingmod.config.GamingingConfig;
+import gg.essential.api.EssentialAPI;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -32,7 +32,7 @@ public class GamingingMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         this.config.preload();
-        ClientCommandHandler.instance.registerCommand(new GamingingCommand());
+        EssentialAPI.getCommandRegistry().registerCommand(new GamingingCommand());
     }
 
     @SubscribeEvent
@@ -44,6 +44,7 @@ public class GamingingMod {
         return Color.getHSBColor((this.timer + partialTicks) / this.config.getSpeedDivider() % 1F, 1F, 1F);
     }
 
+    @SuppressWarnings("unused") // used by asm
     public Vec3 getColorInVec3(float partialTicks) {
         Color color = getColor(partialTicks);
         return new Vec3(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);

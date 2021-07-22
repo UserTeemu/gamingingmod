@@ -1,14 +1,17 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
     }
+
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'com.github.asbyth:ForgeGradle:8708bf3e01'
+        classpath "com.github.jengelman.gradle.plugins:shadow:6.1.0"
     }
 }
 
@@ -26,7 +29,8 @@ minecraft {
     runDir = "run"
     mappings = "stable_22"
     makeObfSourceJar = false
-    clientRunArgs += " --tweakClass dev.userteemu.gamingingmod.asm.tweaker.GamingingTweaker"
+    clientRunArgs += "--tweakClass gg.essential.loader.stage0.EssentialSetupTweaker" // needed to run Essential in dev env
+    clientJvmArgs += "-Dfml.coreMods.load=dev.userteemu.gamingingmod.asm.plugin.GamingingFMLoadingPlugin" // needed to use the fml plugin in dev env
 
     replaceIn "GamingingMod.java"
     replace "@MOD_VERSION@", project.version
@@ -39,22 +43,43 @@ repositories {
     maven { url "https://repo.sk1er.club/repository/maven-public" }
 }
 
+configurations {
+    shadow
+    implementation.extendsFrom shadow
+}
+
 dependencies {
-    compile "net.modcore:Loader:2.0.0"
-    provided("net.modcore:ModCore:714-10809-SNAPSHOT") {
+    shadow "gg.essential:loader-launchwrapper:1.0.2"
+    provided("gg.essential:essential-1.8.9-forge:1234") {
         exclude module: 'asm-commons'
         exclude module: 'asm-tree'
         exclude module: 'asm'
+        exclude module: 'WaifUPnP'
     }
 }
 
 shadowJar {
-    baseName = jar.baseName
-    classifier = jar.classifier
+    archiveBaseName.set(jar.archiveBaseName)
+    archiveClassifier.set(jar.archiveClassifier)
+    configurations = [project.configurations.shadow]
 }
 
-reobf {
-    shadowJar {} // Reobfuscate the shadowed JAR
+reobfJar {
+    setJar(shadowJar.getArchiveFile())
+}
+tasks.reobfJar.dependsOn shadowJar
+jar.enabled = false
+
+jar {
+    manifest {
+        attributes(
+                "FMLCorePlugin": "dev.userteemu.gamingingmod.asm.plugin.GamingingFMLoadingPlugin",
+                "TweakClass": "gg.essential.loader.stage0.EssentialSetupTweaker",
+                "TweakOrder": "0",
+                "FMLCorePluginContainsFMLMod": true,
+                "ModSide": "CLIENT"
+        )
+    }
 }
 
 task moveResources {
@@ -83,15 +108,5 @@ processResources {
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
-    }
-}
-
-jar {
-    manifest {
-        attributes(
-                "TweakClass": "dev.userteemu.gamingingmod.asm.tweaker.GamingingTweaker",
-                "TweakOrder": "0",
-                "ModSide": "CLIENT",
-        )
     }
 }

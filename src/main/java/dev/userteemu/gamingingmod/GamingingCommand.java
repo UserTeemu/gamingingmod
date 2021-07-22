@@ -1,35 +1,16 @@
 package dev.userteemu.gamingingmod;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.modcore.api.ModCoreAPI;
+import gg.essential.api.EssentialAPI;
+import gg.essential.api.commands.Command;
+import gg.essential.api.commands.DefaultHandler;
 
-import java.util.Collections;
-import java.util.List;
-
-public class GamingingCommand extends CommandBase {
-    @Override
-    public String getCommandName() {
-        return "gamingingmod";
+public class GamingingCommand extends Command {
+    public GamingingCommand() {
+        super("gamingingmod");
     }
 
-    @Override
-    public List<String> getCommandAliases() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName();
-    }
-
-    @Override
-    public void processCommand(ICommandSender sender, String[] args) {
-        ModCoreAPI.getGuiUtil().openScreen(GamingingMod.INSTANCE.config.gui());
-    }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return -1;
+    @DefaultHandler
+    public void handle() {
+        EssentialAPI.getGuiUtil().openScreen(GamingingMod.INSTANCE.config.gui());
     }
 }
