@@ -11,10 +11,12 @@ buildscript {
 
     dependencies {
         classpath 'com.github.asbyth:ForgeGradle:8708bf3e01'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
         classpath "com.github.jengelman.gradle.plugins:shadow:6.1.0"
     }
 }
 
+apply plugin: "kotlin"
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.github.johnrengelman.shadow'
 
