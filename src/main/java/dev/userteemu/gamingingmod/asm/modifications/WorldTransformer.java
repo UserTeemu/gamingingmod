@@ -20,17 +20,16 @@ public class WorldTransformer implements ITransformer {
         }
     }
 
-    // if (GamingingMod.INSTANCE.isEnabled) return GamingingMod.INSTANCE.getColor(f);
+    // if (GamingingElement.SKY.enabled) return GamingingMod.getColor(partialTicks, GamingingElement.SKY);
     public InsnList getColor() {
         InsnList list = new InsnList();
         LabelNode label = new LabelNode();
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Ldev/userteemu/gamingingmod/GamingingMod;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/GamingingMod", "config", "Ldev/userteemu/gamingingmod/config/GamingingConfig;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/config/GamingingConfig", "isSkyEnabled", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/config/GamingingElement", "SKY", "Ldev/userteemu/gamingingmod/config/GamingingElement;"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/config/GamingingElement", "enabled", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Ldev/userteemu/gamingingmod/GamingingMod;"));
         list.add(new VarInsnNode(Opcodes.FLOAD, 2));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "dev/userteemu/gamingingmod/GamingingMod", "getColorInVec3", "(F)Lnet/minecraft/util/Vec3;", false));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/config/GamingingElement", "SKY", "Ldev/userteemu/gamingingmod/config/GamingingElement;"));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "dev/userteemu/gamingingmod/GamingingMod", "getColorInVec3", "(FLdev/userteemu/gamingingmod/config/GamingingElement;)Lnet/minecraft/util/Vec3;", false));
         list.add(new InsnNode(Opcodes.ARETURN));
         list.add(label);
         return list;

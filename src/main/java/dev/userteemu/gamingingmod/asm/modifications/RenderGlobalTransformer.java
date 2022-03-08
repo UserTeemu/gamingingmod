@@ -40,13 +40,12 @@ public class RenderGlobalTransformer implements ITransformer {
     private InsnList storeGamingingColorsForWorldBorder(LabelNode colorCall) {
         InsnList list = new InsnList();
         LabelNode label = new LabelNode();
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Ldev/userteemu/gamingingmod/GamingingMod;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/GamingingMod", "config", "Ldev/userteemu/gamingingmod/config/GamingingConfig;"));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/config/GamingingConfig", "isWorldBorderEnabled", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/config/GamingingElement", "WORLD_BORDER", "Ldev/userteemu/gamingingmod/config/GamingingElement;"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, "dev/userteemu/gamingingmod/config/GamingingElement", "enabled", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/GamingingMod", "INSTANCE", "Ldev/userteemu/gamingingmod/GamingingMod;"));
         list.add(new VarInsnNode(Opcodes.FLOAD, 2));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "dev/userteemu/gamingingmod/GamingingMod", "getColor", "(F)Ljava/awt/Color;", false));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "dev/userteemu/gamingingmod/config/GamingingElement", "WORLD_BORDER", "Ldev/userteemu/gamingingmod/config/GamingingElement;"));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "dev/userteemu/gamingingmod/GamingingMod", "getColor", "(FLdev/userteemu/gamingingmod/config/GamingingElement;)Ljava/awt/Color;", false));
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/awt/Color", "getRGB", "()I", false));
         list.add(new JumpInsnNode(Opcodes.GOTO, colorCall));
         list.add(label);
