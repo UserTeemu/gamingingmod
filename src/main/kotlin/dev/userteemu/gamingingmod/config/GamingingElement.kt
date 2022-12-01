@@ -9,7 +9,7 @@ enum class GamingingElement(val title: String) {
     @JvmField
     var enabled = true
 
-    private val colorModeOptions = listOf(CycleColorMode(::colorMode.getter), StaticColorMode(::colorMode.getter))
+    private val colorModeOptions = listOf(CycleColorMode(), StaticColorMode())
 
     @JvmField
     var colorModeInt: Int = 0
@@ -23,13 +23,13 @@ enum class GamingingElement(val title: String) {
         builder.selector(::colorModeInt, "Color mode", options = colorModeOptions.map { it.name })
 
         for (mode in colorModeOptions) {
-            builder.subcategory("Color options") {
-                mode.addProperties(this)
-            }
+            mode.addProperties(builder)
         }
     }
 
     fun afterPropertiesAdded() {
-        collector
+        for (mode in colorModeOptions) {
+            mode.afterPropertiesAdded()
+        }
     }
 }

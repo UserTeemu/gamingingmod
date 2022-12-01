@@ -3,19 +3,18 @@ package dev.userteemu.gamingingmod.config
 import dev.userteemu.gamingingmod.GamingingMod
 import gg.essential.vigilance.Vigilant
 import java.awt.Color
-import kotlin.reflect.jvm.javaField
 
 interface ColorMode {
     val name: String
-    val shouldBeHidden: () -> Boolean
     fun getColor(partialTicks: Float): Color
     fun addProperties(builder: Vigilant.CategoryPropertyBuilder)
-    fun afterPropertiesAdded() {}
+    fun afterPropertiesAdded() {
+        // TODO: Hide if this mode is not used. Awaits https://github.com/EssentialGG/Vigilance/pull/25.
+    }
 }
 
-class CycleColorMode(getActiveColorMode: () -> ColorMode) : ColorMode {
-    override val name: String = "Color cycle"
-    override val shouldBeHidden: () -> Boolean = {getActiveColorMode() == this}
+class CycleColorMode : ColorMode {
+    override val name: String = "Color Cycle"
 
     @JvmField
     var cycleSpeed = 4900
@@ -30,17 +29,14 @@ class CycleColorMode(getActiveColorMode: () -> ColorMode) : ColorMode {
         Color.getHSBColor((GamingingMod.INSTANCE.timer + partialTicks) / getSpeedDivider() % 1f, 1f, 1f)
 
     override fun addProperties(builder: Vigilant.CategoryPropertyBuilder) {
-        builder.slider(::cycleSpeed, "Cycle speed", max = 5000, hidden = shouldBeHidden())
-    }
-
-    override fun afterPropertiesAdded() {
-        GamingingConfig.hidePropertyIf(::cycleSpeed.javaField!!, shouldBeHidden)
+        builder.subcategory("Color Cycle Options") {
+            slider(::cycleSpeed, "Cycle speed", max = 5000)
+        }
     }
 }
 
-class StaticColorMode(getActiveColorMode: () -> ColorMode) : ColorMode {
-    override val name: String = "Static color"
-    override val shouldBeHidden: () -> Boolean = {getActiveColorMode() == this}
+class StaticColorMode : ColorMode {
+    override val name: String = "Static Color"
 
     @JvmField
     var color: Color = Color.BLUE
@@ -48,10 +44,8 @@ class StaticColorMode(getActiveColorMode: () -> ColorMode) : ColorMode {
     override fun getColor(partialTicks: Float): Color = color
 
     override fun addProperties(builder: Vigilant.CategoryPropertyBuilder) {
-        builder.color(::color, "Static color", hidden = shouldBeHidden())
-    }
-
-    override fun afterPropertiesAdded() {
-        GamingingConfig.hidePropertyIf(::color.javaField!!, shouldBeHidden)
+        builder.subcategory("Static Color Options") {
+            color(::color, "Static color")
+        }
     }
 }
