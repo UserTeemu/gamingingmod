@@ -1,48 +1,30 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url "https://jitpack.io" }
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-
-    dependencies {
-        classpath 'com.github.asbyth:ForgeGradle:8708bf3e01'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
-        classpath "com.github.jengelman.gradle.plugins:shadow:6.1.0"
-    }
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.7.21"
+    id "gg.essential.defaults.java"
+    id "gg.essential.defaults.repo"
+    id "gg.essential.defaults.loom"
 }
 
-apply plugin: "kotlin"
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'com.github.johnrengelman.shadow'
-
-version = "1.0.0"
-group = "dev.userteemu.gamingingmod"
-archivesBaseName = "Gamingingmod"
+version = project.version
+group = project.group
+archivesBaseName = project.archivesBaseName
 
 sourceCompatibility = targetCompatibility = 1.8
 
-minecraft {
-    version = "1.8.9-11.15.1.2318-1.8.9"
-    runDir = "run"
-    mappings = "stable_22"
-    makeObfSourceJar = false
-    clientRunArgs += "--tweakClass gg.essential.loader.stage0.EssentialSetupTweaker" // needed to run Essential in dev env
-    clientJvmArgs += "-Dfml.coreMods.load=dev.userteemu.gamingingmod.asm.plugin.GamingingFMLoadingPlugin" // needed to use the fml plugin in dev env
-
-    replaceIn "GamingingMod.java"
-    replace "@MOD_VERSION@", project.version
+loom {
+    launchConfigs {
+        getByName("client") {
+            property("fml.coreMods.load", "dev.userteemu.gamingingmod.asm.plugin.GamingingFMLoadingPlugin") // needed to use the fml plugin in dev env
+            arg("--tweakClass", "gg.essential.loader.stage0.EssentialSetupTweaker") // needed to run Essential in dev env
+        }
+    }
 }
 
 repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
-    maven { url 'https://repo.spongepowered.org/maven' }
-    maven { url "https://repo.sk1er.club/repository/maven-public" }
+    maven { url 'https://repo.spongepowered.org/repository/maven-public' }
+    maven { url "https://repo.essential.gg/repository/maven-public" }
 }
 
 configurations {
@@ -51,28 +33,13 @@ configurations {
 }
 
 dependencies {
-    shadow "gg.essential:loader-launchwrapper:1.0.2"
-    provided("gg.essential:essential-1.8.9-forge:1234") {
-        exclude module: 'asm-commons'
-        exclude module: 'asm-tree'
-        exclude module: 'asm'
-        exclude module: 'WaifUPnP'
-    }
+    shadow "gg.essential:loader-launchwrapper:1.1.3"
+    compileOnly("gg.essential:essential-1.8.9-forge:$essentialVersion")
 }
-
-shadowJar {
-    archiveBaseName.set(jar.archiveBaseName)
-    archiveClassifier.set(jar.archiveClassifier)
-    configurations = [project.configurations.shadow]
-}
-
-reobfJar {
-    setJar(shadowJar.getArchiveFile())
-}
-tasks.reobfJar.dependsOn shadowJar
-jar.enabled = false
 
 jar {
+    from configurations.shadow.files.collect { zipTree(it) }
+
     manifest {
         attributes(
                 "FMLCorePlugin": "dev.userteemu.gamingingmod.asm.plugin.GamingingFMLoadingPlugin",
@@ -84,31 +51,6 @@ jar {
     }
 }
 
-task moveResources {
-    doLast {
-        ant.move file: "${buildDir}/resources/main",
-                todir: "${buildDir}/classes/java"
-    }
-}
-
-moveResources.dependsOn processResources
-classes.dependsOn moveResources
-
 processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-
-        // replace version and mcversion
-        expand "version": project.version, "mcversion": project.minecraft.version
-    }
-
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
-    }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
